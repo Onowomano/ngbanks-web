@@ -1,0 +1,443 @@
+---
+import Logo from "../components/icons/Logo.astro";
+import FigmaIcon from "../components/icons/FigmaIcon.astro";
+import GithubIcon from "../components/icons/GithubIcon.astro";
+import PhoneMockup from "../components/PhoneMockup.astro";
+import DesktopMockup from "../components/DesktopMockup.astro";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Nigerian Bank Logos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      try {
+        var _t = localStorage.getItem("active-tab");
+        if (_t) document.documentElement.setAttribute("data-tab", _t);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <main class="hero">
+      <aside class="sidebar">
+        <div class="sidebar__top">
+          <a href="/" class="logo" aria-label="Home">
+            <Logo width={52} height={55} />
+          </a>
+          <nav class="nav">
+            <a href="/" class="nav__link">Home</a>
+            <a href="https://github.com" class="nav__link">Github</a>
+            <a href="https://figma.com" class="nav__link">Figma</a>
+            <a href="/contribute" class="nav__link">Contribute</a>
+          </nav>
+        </div>
+
+        <div class="sidebar__bottom">
+          <div class="headline-group">
+            <h1 class="headline">
+              Open-source<br />repository of 500+<br />Nigerian bank icons
+            </h1>
+            <p class="subtext">Free to use under MIT License.</p>
+          </div>
+          <div class="button-group">
+            <a href="https://figma.com" class="btn">
+              <FigmaIcon />
+              <span>Figma</span>
+            </a>
+            <a href="https://github.com" class="btn">
+              <GithubIcon />
+              <span>Github</span>
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <div class="panel">
+        <div class="panel__stack">
+          <div class="tab-group" role="tablist" aria-label="View mode">
+            <button
+              class="tab-item"
+              role="tab"
+              aria-selected="false"
+              aria-label="Smartphone view"
+              data-tab="phone"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M10 15H10.0084M5.83335 1.66667H14.1667C15.0872 1.66667 15.8334 2.41286 15.8334 3.33333V16.6667C15.8334 17.5871 15.0872 18.3333 14.1667 18.3333H5.83335C4.91288 18.3333 4.16669 17.5871 4.16669 16.6667V3.33333C4.16669 2.41286 4.91288 1.66667 5.83335 1.66667Z"
+                  stroke="#04000A"
+                  stroke-width="1.66667"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+            </button>
+            <button
+              class="tab-item"
+              role="tab"
+              aria-selected="false"
+              aria-label="Monitor view"
+              data-tab="monitor"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <g clip-path="url(#clip0_105_9275)">
+                  <path
+                    d="M6.66669 17.5H13.3334M10 14.1667V17.5M3.33335 2.5H16.6667C17.5872 2.5 18.3334 3.24619 18.3334 4.16667V12.5C18.3334 13.4205 17.5872 14.1667 16.6667 14.1667H3.33335C2.41288 14.1667 1.66669 13.4205 1.66669 12.5V4.16667C1.66669 3.24619 2.41288 2.5 3.33335 2.5Z"
+                    stroke="#04000A"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </g>
+                <defs>
+                  <clipPath id="clip0_105_9275">
+                    <rect width="20" height="20" fill="white"></rect>
+                  </clipPath>
+                </defs>
+              </svg>
+            </button>
+          </div>
+          <div id="view-phone">
+            <PhoneMockup />
+          </div>
+          <div id="view-monitor" hidden>
+            <DesktopMockup />
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  /* ── Tab view visibility (CSS-driven, prevents flash) ── */
+  html[data-tab="monitor"] #view-phone   { display: none; }
+  html[data-tab="monitor"] #view-monitor { display: block; }
+  html[data-tab="phone"]   #view-monitor { display: none; }
+  html[data-tab="phone"]   #view-phone   { display: block; }
+
+  /* Stable width for phone view — breaks the circular sizing dependency
+     between #view-phone (shrink-wrapped flex child) and .bc-outer (% width) */
+  #view-phone {
+    width: min(420px, calc(100% - 40px));
+  }
+
+  #view-monitor {
+    position: absolute;
+    top: 13%;
+    left: 12%;
+  }
+
+  /* ── Tab button active state (CSS-driven, prevents flash) ── */
+  html[data-tab="phone"]   .tab-item[data-tab="phone"],
+  html[data-tab="monitor"] .tab-item[data-tab="monitor"] {
+    background: #ffffff;
+    border-color: #eef7fd;
+    box-shadow: 0px 6px 8px rgba(0, 117, 182, 0.15);
+  }
+
+  /* ── Design tokens ──────────────────────────── */
+  :root {
+    --color-text-primary: #030712;
+    --color-text-tertiary: #6b7280;
+    --color-border: #d1d5db;
+    --color-surface: #ffffff;
+    --color-panel: #91d7fe;
+
+    --font-size-sm: 1rem; /* 16px — nav links, button labels */
+    --font-size-md: 1.25rem; /* 20px — subtext */
+    --font-size-lg: 2.25rem; /* 36px — headline */
+
+    --letter-spacing-sm: -0.02em; /* -0.32px @ 16px */
+    --letter-spacing-md: -0.04em; /* -0.8px  @ 20px */
+    --letter-spacing-lg: -0.04em; /* -1.44px @ 36px */
+
+    /* Left panel: 400px ÷ 1440px = 27.78vw, bounded */
+    --sidebar-width: clamp(260px, 27.78vw, 520px);
+
+    --sidebar-pad-x: clamp(20px, 1.94vw, 28px);
+    --sidebar-pad-y-top: clamp(20px, 1.94vw, 28px);
+    --sidebar-pad-y-bottom: clamp(28px, 2.78vw, 40px);
+  }
+
+  /* ── Reset ──────────────────────────────────── */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: "Inter", sans-serif;
+    background: var(--color-surface);
+    overflow: hidden;
+    font-feature-settings:
+      "cv11" on,
+      "cv10" on,
+      "cv08" on,
+      "cv06" on,
+      "cv01" on;
+  }
+
+  /* ── Layout ─────────────────────────────────── */
+  .hero {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+  }
+
+  .sidebar {
+    width: var(--sidebar-width);
+    flex-shrink: 0;
+    height: 100%;
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--sidebar-pad-y-top) var(--sidebar-pad-x)
+      var(--sidebar-pad-y-bottom);
+  }
+
+  .panel {
+    position: relative;
+    flex: 1;
+    height: 100%;
+    background: var(--color-panel);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 40px;
+    overflow: hidden;
+  }
+
+  .panel__stack {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  /* ── Tab group ───────────────────────────────── */
+  .tab-group {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 2px;
+    gap: 0;
+  }
+
+  .tab-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border: 0.5px solid transparent;
+    border-radius: 8px;
+    background: none;
+    cursor: pointer;
+    transition:
+      background 0.15s ease,
+      box-shadow 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .tab-item--active {
+    background: #ffffff;
+    border-color: #eef7fd;
+    box-shadow: 0px 6px 8px rgba(0, 117, 182, 0.15);
+  }
+
+  /* ── Logo ───────────────────────────────────── */
+  .logo {
+    display: inline-flex;
+    text-decoration: none;
+  }
+
+  /* ── Nav ────────────────────────────────────── */
+  .sidebar__top {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav__link {
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+    color: var(--color-text-tertiary);
+    letter-spacing: var(--letter-spacing-sm);
+    line-height: 1.25;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .nav__link:hover {
+    color: var(--color-text-primary);
+  }
+
+  /* ── Bottom content ──────────────────────────── */
+  .sidebar__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .headline-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .headline {
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    color: var(--color-text-primary);
+    letter-spacing: var(--letter-spacing-lg);
+    line-height: 1;
+  }
+
+  .subtext {
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    color: var(--color-text-tertiary);
+    letter-spacing: var(--letter-spacing-md);
+    line-height: 1.2;
+  }
+
+  /* ── Buttons ────────────────────────────────── */
+  .button-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+    color: var(--color-text-primary);
+    letter-spacing: var(--letter-spacing-sm);
+    line-height: 1.25;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+
+  .btn:hover {
+    border-color: var(--color-text-tertiary);
+  }
+
+  /* ── Mobile responsive ───────────────────────── */
+  @media (max-width: 768px) {
+    :root {
+      --font-size-lg: 1.75rem;
+      --font-size-md: 1.125rem;
+    }
+
+    body {
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      flex-direction: column;
+      height: auto;
+      min-height: 100dvh;
+    }
+
+    .sidebar {
+      width: 100%;
+      height: auto;
+      justify-content: flex-start;
+      gap: 32px;
+      padding: 24px 20px;
+    }
+
+    .panel {
+      height: auto;
+      min-height: 70vh;
+      overflow: visible;
+      padding-top: 24px;
+      padding-bottom: 32px;
+    }
+
+    .tab-group {
+      display: none;
+    }
+
+    #view-phone {
+      display: block !important;
+    }
+
+    #view-monitor {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>(".tab-item");
+  const viewPhone = document.getElementById("view-phone")!;
+  const viewMonitor = document.getElementById("view-monitor")!;
+
+  function activateTab(tabName: string) {
+    document.documentElement.setAttribute("data-tab", tabName);
+    tabs.forEach((t) => {
+      const active = t.dataset.tab === tabName;
+      t.classList.toggle("tab-item--active", active);
+      t.setAttribute("aria-selected", String(active));
+    });
+    const isPhone = tabName === "phone";
+    viewPhone.hidden = !isPhone;
+    viewMonitor.hidden = isPhone;
+  }
+
+  const saved = localStorage.getItem("active-tab") ?? "phone";
+  activateTab(saved);
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const name = tab.dataset.tab!;
+      localStorage.setItem("active-tab", name);
+      activateTab(name);
+    });
+  });
+</script>

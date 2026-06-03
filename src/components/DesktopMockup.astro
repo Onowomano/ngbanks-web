@@ -1,0 +1,1064 @@
+---
+import banksData from "../data/banks.json";
+type Bank = { name: string; logo: string; aliases: string[] };
+const banks = banksData as Bank[];
+---
+
+<div class="dm-outer">
+  <div class="dm-frame">
+    <!-- ── System bar ─────────────────────────── -->
+    <div class="dm-statusbar">
+      <!-- Apple Logo -->
+      <svg
+        width="14"
+        height="16"
+        viewBox="0 0 14 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M11.2315 15.3581C10.3605 16.2024 9.40955 16.0691 8.49411 15.6691C7.52534 15.2603 6.63656 15.2425 5.61447 15.6691C4.33463 16.2202 3.65916 16.0602 2.89482 15.3581C-1.44242 10.8875 -0.802496 4.07949 4.12133 3.83063C5.32118 3.89284 6.15663 4.48832 6.85876 4.54165C7.90752 4.32834 8.91183 3.71509 10.0317 3.79508C11.3737 3.90173 12.387 4.435 13.0535 5.39487C10.2806 7.05689 10.9382 10.7098 13.4801 11.7319C12.9735 13.065 12.3158 14.3893 11.2227 15.367L11.2315 15.3581ZM6.76988 3.7773C6.63656 1.79533 8.24525 0.15998 10.0939 0C10.3517 2.29304 8.01417 3.9995 6.76988 3.7773Z"
+          fill="black"></path>
+      </svg>
+
+      <div class="dm-statusbar___app">
+        <span>Chrome</span>
+      </div>
+
+      <div class="dm-statusbar___items">
+        <span>File</span>
+        <span>Edit</span>
+        <span>View</span>
+        <span>History</span>
+        <span>Bookmarks</span>
+        <span>Profile</span>
+        <span>Tabs</span>
+        <span>Windows</span>
+        <span>Help</span>
+      </div>
+
+      <div class="dm-statusbar___icons">
+        <!-- Wifi -->
+        <svg
+          width="16"
+          height="12"
+          viewBox="0 0 16 12"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M7.70042 2.29636C9.93483 2.29646 12.0838 3.15501 13.7032 4.69457C13.8251 4.81343 14.02 4.81193 14.1401 4.69121L15.3058 3.51479C15.3666 3.45356 15.4005 3.37062 15.4 3.28433C15.3995 3.19803 15.3646 3.11549 15.3031 3.05498C11.0528 -1.01833 4.3474 -1.01833 0.0970716 3.05498C0.0355014 3.11545 0.000571881 3.19796 7.20154e-06 3.28426C-0.000567562 3.37055 0.033283 3.45352 0.0940465 3.51479L1.26005 4.69121C1.38006 4.81211 1.57513 4.81361 1.697 4.69457C3.31657 3.15491 5.46579 2.29636 7.70042 2.29636V2.29636ZM7.70042 6.12375C8.92809 6.12367 10.1119 6.57999 11.022 7.40402C11.145 7.52097 11.3389 7.51844 11.4589 7.39831L12.6232 6.22189C12.6845 6.16019 12.7186 6.07648 12.7177 5.98949C12.7168 5.90251 12.6811 5.8195 12.6185 5.75906C9.84735 3.18131 5.55584 3.18131 2.78469 5.75906C2.72209 5.8195 2.68637 5.90255 2.68555 5.98956C2.68473 6.07657 2.71887 6.16028 2.78031 6.22189L3.9443 7.39831C4.06427 7.51844 4.25817 7.52097 4.38125 7.40402C5.29065 6.58053 6.47357 6.12425 7.70042 6.12375V6.12375ZM9.93797 8.93135C10.0002 8.87024 10.0345 8.78614 10.0327 8.69891C10.031 8.61168 9.99327 8.52905 9.92855 8.47053C8.64232 7.38263 6.75852 7.38263 5.47229 8.47053C5.40753 8.529 5.36977 8.6116 5.36792 8.69883C5.36608 8.78606 5.40031 8.87019 5.46254 8.93135L7.4769 10.9639C7.53594 11.0236 7.61643 11.0572 7.70042 11.0572C7.78441 11.0572 7.8649 11.0236 7.92394 10.9639L9.93797 8.93135Z"
+            fill="black"></path>
+        </svg>
+
+        <!-- Battery -->
+        <svg
+          width="25"
+          height="12"
+          viewBox="0 0 25 12"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M18.4102 0C19.6582 0 20.1111 0.130042 20.5674 0.374023C21.0237 0.618053 21.3819 0.976321 21.626 1.43262C21.87 1.88887 22 2.34185 22 3.58984V7.91016C22 9.15815 21.87 9.61113 21.626 10.0674C21.3819 10.5237 21.0237 10.8819 20.5674 11.126C20.1111 11.37 19.6582 11.5 18.4102 11.5H3.58984C2.34185 11.5 1.88887 11.37 1.43262 11.126C0.976321 10.8819 0.618053 10.5237 0.374023 10.0674C0.130042 9.61113 0 9.15815 0 7.91016V3.58984C0 2.34185 0.130042 1.88887 0.374023 1.43262C0.618053 0.976321 0.976321 0.618053 1.43262 0.374023C1.88887 0.130042 2.34185 0 3.58984 0H18.4102ZM3.58984 1C2.60305 1 2.25812 1.06668 1.9043 1.25586C1.62227 1.40669 1.40669 1.62227 1.25586 1.9043C1.06668 2.25812 1 2.60305 1 3.58984V7.91016C1 8.89695 1.06668 9.24188 1.25586 9.5957C1.40669 9.87773 1.62227 10.0933 1.9043 10.2441C2.25812 10.4333 2.60305 10.5 3.58984 10.5H18.4102C19.397 10.5 19.7419 10.4333 20.0957 10.2441C20.3777 10.0933 20.5933 9.87773 20.7441 9.5957C20.9333 9.24188 21 8.89695 21 7.91016V3.58984C21 2.60305 20.9333 2.25812 20.7441 1.9043C20.5933 1.62227 20.3777 1.40669 20.0957 1.25586C19.7419 1.06668 19.397 1 18.4102 1H3.58984ZM23 3.69043C23.0184 3.69985 24.5 4.46155 24.5 5.69043C24.4997 6.92675 23 7.69043 23 7.69043V3.69043Z"
+            fill="black"
+            fill-opacity="0.36"></path>
+          <rect
+            x="2"
+            y="1.91602"
+            width="18"
+            height="7.66667"
+            rx="1.6"
+            fill="black"></rect>
+        </svg>
+      </div>
+
+      <div class="dm-statusbar___today">
+        <span class="dm-statusbar___date" id="dm-date">Wed 3 Jun</span>
+        <span class="dm-statusbar___time" id="dm-time">18:43</span>
+      </div>
+    </div>
+
+    <!-- ── Title bar ─────────────────────────── -->
+    <div class="dm-titlebar">
+      <div class="dm-dots">
+        <span class="dm-dot dm-dot--red"></span>
+        <span class="dm-dot dm-dot--yellow"></span>
+        <span class="dm-dot dm-dot--green"></span>
+      </div>
+      <div class="dm-tab">
+        <span class="dm-tab__favicon"></span>
+        <span class="dm-tab__label"></span>
+
+        <svg
+          class="dm-tab__close"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 4L4 12M4 4L12 12"
+            stroke="#04000A"
+            stroke-width="1.33333"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </div>
+
+      <div class="dm-plus-box">
+        <svg
+          class="dm-tab-plus"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M3.33325 7.99998H12.6666M7.99992 3.33331V12.6666"
+            stroke="#04000A"
+            stroke-width="1.33333"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </div>
+
+      <div class="dm-menu-skel"></div>
+    </div>
+
+    <!-- ── Nav bar ────────────────────────────── -->
+    <div class="dm-navbar">
+      <div class="dm-navbtns">
+        <!-- Back -->
+        <button class="dm-navbtn" aria-label="Back">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 5L5 12L12 19M5 12H19"
+              stroke="#04000A"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+        <!-- Forward (dimmed) -->
+        <button class="dm-navbtn dm-navbtn--dim" aria-label="Forward">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g>
+              <path
+                d="M5 12H19M12 19L19 12L12 5"
+                stroke="#CDCCCE"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </g>
+          </svg>
+        </button>
+        <!-- Refresh -->
+        <button class="dm-navbtn" aria-label="Refresh">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21 12C21 13.78 20.4722 15.5201 19.4832 17.0001C18.4943 18.4802 17.0887 19.6337 15.4442 20.3149C13.7996 20.9961 11.99 21.1743 10.2442 20.8271C8.49836 20.4798 6.89472 19.6226 5.63604 18.364C4.37737 17.1053 3.5202 15.5016 3.17294 13.7558C2.82567 12.01 3.0039 10.2004 3.68509 8.55585C4.36628 6.91131 5.51983 5.50571 6.99987 4.51677C8.47991 3.52784 10.22 3 12 3C14.52 3 16.93 4 18.74 5.74L21 8M16 8H21L21 3"
+              stroke="#04000A"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+        <!-- Home -->
+        <button class="dm-navbtn" aria-label="Home">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15 21V13C15 12.7348 14.8946 12.4804 14.7071 12.2929C14.5196 12.1054 14.2652 12 14 12H10C9.73478 12 9.48043 12.1054 9.29289 12.2929C9.10536 12.4804 9 12.7348 9 13V21M3 9.99997C2.99993 9.70904 3.06333 9.42159 3.18579 9.15768C3.30824 8.89378 3.4868 8.65976 3.709 8.47197L10.709 2.47297C11.07 2.16788 11.5274 2.00049 12 2.00049C12.4726 2.00049 12.93 2.16788 13.291 2.47297L20.291 8.47197C20.5132 8.65976 20.6918 8.89378 20.8142 9.15768C20.9367 9.42159 21.0001 9.70904 21 9.99997V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V9.99997Z"
+              stroke="#04000A"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- URL bar -->
+      <div class="dm-url" role="presentation">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21 21L16.7 16.7M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+            stroke="#04000A"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+
+        <span class="dm-url__placeholder"></span>
+      </div>
+
+      <!-- Actions placeholder -->
+      <div class="dm-actions">
+        <span class="dm-action-circle__placeholder"></span>
+        <span class="dm-action-square__placeholder"></span>
+      </div>
+    </div>
+
+    <!-- ── Page body ──────────────────────────── -->
+    <div class="dm-body">
+      <!-- Sidebar -->
+
+      <div class="dm-sidebar">
+        <!-- Send icon -->
+
+        <div class="dm-send-icon">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M14.5515 17.447C14.2967 17.1927 13.993 16.9925 13.6587 16.8587L3.0854 12.6187C2.95916 12.5681 2.85143 12.48 2.77668 12.3664C2.70193 12.2527 2.66373 12.1189 2.66721 11.9829C2.67069 11.847 2.71569 11.7153 2.79616 11.6056C2.87663 11.4959 2.98873 11.4135 3.1174 11.3694L28.4507 2.70272C28.5689 2.66005 28.6967 2.65191 28.8193 2.67924C28.9419 2.70658 29.0542 2.76827 29.143 2.85709C29.2319 2.94591 29.2935 3.05819 29.3209 3.18079C29.3482 3.30339 29.3401 3.43125 29.2974 3.54939L20.6307 28.8827C20.5866 29.0114 20.5042 29.1235 20.3945 29.204C20.2848 29.2844 20.1532 29.3294 20.0172 29.3329C19.8812 29.3364 19.7474 29.2982 19.6338 29.2234C19.5201 29.1487 19.4321 29.041 19.3814 28.9147L15.1414 18.3387C15.007 18.0047 14.8063 17.7014 14.5515 17.447ZM14.5515 17.447L29.1388 2.86261"
+              stroke="#04000A"
+              stroke-width="2.66667"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </div>
+
+        <div class="dm-send-header">
+          <span class="dm-send-header__title">Send money</span>
+          <span class="dm-send-header__subtitle"
+            >Send money to your friends and family</span
+          >
+        </div>
+
+        <!-- Select -->
+        <div class="dm-select">
+          <label for="dm-bank-trigger">Bank</label>
+          <div class="dm-combobox" id="dm-bank-combobox">
+            <button
+              class="dm-combobox__trigger"
+              id="dm-bank-trigger"
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+            >
+              <span class="dm-combobox__selected-logo" id="dm-selected-logo"
+              ></span>
+              <span class="dm-combobox__selected-label" id="dm-selected-label"
+                >Select bank</span
+              >
+              <svg
+                class="dm-combobox__chevron"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 6L8 10L12 6"
+                  stroke="#6B7280"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+            </button>
+            <div class="dm-combobox__panel" id="dm-bank-panel" hidden>
+              <div class="dm-combobox__search-wrap">
+                <svg
+                  class="dm-combobox__search-icon"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M17.5 17.5L13.9166 13.9166M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z"
+                    stroke="#6B7280"
+                    stroke-width="1.66667"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
+                <input
+                  type="text"
+                  id="dm-bank-search"
+                  class="dm-combobox__search-input"
+                  placeholder="Search"
+                  autocomplete="off"
+                  spellcheck="false"
+                  aria-label="Search banks"
+                />
+              </div>
+              <div class="dm-combobox__list" id="dm-bank-list" role="listbox">
+                {
+                  banks.map((b) => (
+                    <div
+                      class="dm-opt"
+                      role="option"
+                      data-name={b.name}
+                      data-aliases={b.aliases.join(",")}
+                    >
+                      <div class="dm-opt__logo">
+                        <img
+                          src={b.logo}
+                          alt={b.name}
+                          width="32"
+                          height="32"
+                          loading="lazy"
+                        />
+                      </div>
+                      <span class="dm-opt__name">{b.name}</span>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Section -->
+      <div class="dm-main">
+        <span class="dm-avatar__placeholder"></span>
+
+        <div class="dm-text">
+          <span class="dm-text-long__placeholder"></span>
+          <span class="dm-text-long__placeholder"></span>
+          <span class="dm-text-short__placeholder"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ── Outer wrapper ────────────────────────── */
+  .dm-outer {
+    width: 1628px;
+    height: 928px;
+    flex-shrink: 0;
+    padding: 12px;
+    background: white;
+    border: 1.5px solid #eaeaea;
+    border-radius: 42px;
+  }
+
+  /* ── Browser frame ────────────────────────── */
+  .dm-frame {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border: 1.5px solid #eaeaea;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
+  }
+
+  /* ── Status bar ────────────────────────────── */
+  .dm-statusbar {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    height: 44px;
+    border-bottom: 1.5px solid #eaeaea;
+    flex-shrink: 0;
+    gap: 20px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.02em;
+    color: #6b7280;
+  }
+
+  .dm-statusbar___items {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .dm-statusbar___icons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .dm-statusbar___today {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  /* ── Title bar ────────────────────────────── */
+  .dm-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 52px;
+    border-bottom: 1.5px solid #eaeaea;
+    flex-shrink: 0;
+    gap: 0;
+  }
+
+  .dm-dots {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .dm-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
+  }
+
+  .dm-dot--red {
+    background: #fe5f57;
+    box-shadow: 0 0 0 1px #e04040 inset;
+  }
+  .dm-dot--yellow {
+    background: #ffbd44;
+    box-shadow: 0 0 0 1px #e6a817 inset;
+  }
+  .dm-dot--green {
+    background: #28c840;
+    box-shadow: 0 0 0 1px #23af38 inset;
+  }
+
+  .dm-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 16px;
+    margin-top: 9px;
+    padding: 0 12px;
+    height: 44px;
+    min-width: 180px;
+    max-width: 240px;
+    background: white;
+    border: 1.5px solid #eaeaea;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .dm-tab__favicon {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    background: #eaeaea;
+    flex-shrink: 0;
+  }
+
+  .dm-tab__label {
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    background: #eaeaea;
+  }
+
+  .dm-tab__close {
+    flex-shrink: 0;
+    opacity: 0.5;
+  }
+
+  .dm-plus-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px;
+    margin: 2px 0;
+  }
+
+  .dm-tab-plus {
+    flex-shrink: 0;
+  }
+
+  .dm-menu-skel {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    background: #eaeaea;
+    margin-left: auto;
+  }
+
+  /* ── Nav bar ──────────────────────────────── */
+  .dm-navbar {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 72px;
+    border-bottom: 1.5px solid #eaeaea;
+    flex-shrink: 0;
+    gap: 28px;
+  }
+
+  .dm-navbtns {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+
+  .dm-navbtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .dm-navbtn:hover {
+    background: #f3f4f6;
+  }
+
+  .dm-navbtn--dim {
+    opacity: 0.2;
+    cursor: default;
+  }
+
+  .dm-navbtn--dim:hover {
+    background: none;
+  }
+
+  .dm-url {
+    flex: 1;
+    height: 48px;
+    border: 1.5px solid #eaeaea;
+    border-radius: 99999px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .dm-url__placeholder {
+    flex: 1;
+    height: 8px;
+    max-width: 240px;
+    border-radius: 4px;
+    background: #eaeaea;
+  }
+
+  .dm-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  .dm-action-circle__placeholder {
+    width: 20px;
+    height: 20px;
+    border-radius: 9999px;
+    background: #eaeaea;
+    margin-left: auto;
+  }
+
+  .dm-action-square__placeholder {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    background: #eaeaea;
+    margin-left: auto;
+  }
+
+  /* ── Page body ────────────────────────────── */
+  .dm-body {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ──────────────────────────────── */
+  .dm-sidebar {
+    width: 36%;
+    flex-shrink: 0;
+    border-right: 1.5px solid #eaeaea;
+    padding: 80px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .dm-send-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 6px;
+    padding: 16px;
+    background: #eaeaea;
+  }
+
+  .dm-send-header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .dm-send-header__title {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 20px;
+    letter-spacing: -0.02em;
+    color: #030712;
+  }
+
+  .dm-send-header__subtitle {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.02em;
+    color: #6b7280;
+  }
+
+  .dm-select {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .dm-select label {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.02em;
+    color: #030712;
+  }
+
+  .dm-select select {
+    width: 100%;
+    height: 40px;
+    border: 1.5px solid #eaeaea;
+    border-radius: 6px;
+    background: white;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  /* ── Main content ─────────────────────────── */
+  .dm-main {
+    flex: 1;
+    padding: 0 100px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    gap: 16px;
+  }
+  .dm-text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .dm-avatar__placeholder {
+    width: 72px;
+    height: 72px;
+    border-radius: 14px;
+    background: #eaeaea;
+    margin-top: 80px;
+  }
+
+  .dm-text-long__placeholder {
+    width: 260px;
+    height: 16px;
+    border-radius: 999px;
+    background: #eaeaea;
+  }
+
+  .dm-text-long__placeholder {
+    width: 260px;
+    height: 16px;
+    border-radius: 999px;
+    background: #eaeaea;
+  }
+
+  .dm-text-short__placeholder {
+    width: 184px;
+    height: 16px;
+    border-radius: 999px;
+    background: #eaeaea;
+  }
+
+  /* ── Bank rows ────────────────────────────── */
+  .dm-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #eaeaea;
+    flex-shrink: 0;
+  }
+
+  .dm-row:last-child {
+    border-bottom: none;
+  }
+
+  .dm-row__logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    flex-shrink: 0;
+  }
+
+  .dm-row__name {
+    height: 12px;
+    border-radius: 6px;
+    background: #eaeaea;
+  }
+
+  /* ── Shared skeleton ──────────────────────── */
+  .dm-skel {
+    height: 12px;
+    border-radius: 6px;
+    background: #f0f0f0;
+    display: block;
+  }
+
+  /* ── Bank combobox ────────────────────────── */
+  .dm-combobox {
+    position: relative;
+  }
+
+  .dm-combobox__trigger {
+    width: 100%;
+    height: 40px;
+    border: 1.5px solid #eaeaea;
+    border-radius: 6px;
+    background: white;
+    padding: 0 10px;
+    font-family: inherit;
+    font-size: 14px;
+    gap: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    transition: border-color 0.15s ease;
+  }
+
+  .dm-combobox__trigger:hover,
+  .dm-combobox__trigger[aria-expanded="true"] {
+    border-color: #d1d5db;
+  }
+
+  .dm-combobox__selected-logo {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dm-combobox__selected-logo img {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+
+  .dm-combobox__selected-label {
+    flex: 1;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .dm-combobox__selected-label--chosen {
+    color: #030712;
+  }
+
+  .dm-combobox__chevron {
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+  }
+
+  .dm-combobox__trigger[aria-expanded="true"] .dm-combobox__chevron {
+    transform: rotate(180deg);
+  }
+
+  .dm-combobox__panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1.5px solid #eaeaea;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    max-height: 220px;
+    overflow: hidden;
+  }
+
+  .dm-combobox__panel--below {
+    top: calc(100% + 4px);
+    bottom: auto;
+  }
+
+  .dm-combobox__panel--above {
+    bottom: calc(100% + 4px);
+    top: auto;
+  }
+
+  .dm-combobox__panel[hidden] {
+    display: none;
+  }
+
+  .dm-combobox__search-wrap {
+    position: relative;
+    padding: 8px;
+    border-bottom: 1px solid #eaeaea;
+    flex-shrink: 0;
+  }
+
+  .dm-combobox__search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .dm-combobox__search-input {
+    width: 100%;
+    height: 30px;
+    border: 1.5px solid #eaeaea;
+    border-radius: 4px;
+    padding: 0 8px 0 28px;
+    font-size: 12px;
+    font-family: inherit;
+    color: #030712;
+    letter-spacing: -0.02em;
+    outline: none;
+    background: white;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease;
+  }
+
+  .dm-combobox__search-input:focus {
+    border-color: #d1d5db;
+  }
+
+  .dm-combobox__list {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #eaeaea transparent;
+  }
+
+  .dm-combobox__list::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .dm-combobox__list::-webkit-scrollbar-thumb {
+    background: #eaeaea;
+    border-radius: 2px;
+  }
+
+  .dm-opt {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #f5f5f5;
+    flex-shrink: 0;
+  }
+
+  .dm-opt:last-child {
+    border-bottom: none;
+  }
+
+  .dm-opt:hover {
+    background: #f9fafb;
+  }
+
+  .dm-opt__logo {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+
+  .dm-opt__logo img {
+    width: 32px;
+    height: 32px;
+    display: block;
+  }
+
+  .dm-opt__name {
+    font-size: 14px;
+    color: #030712;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .dm-opt--empty {
+    padding: 12px;
+    text-align: center;
+    font-size: 12px;
+    color: #6b7280;
+  }
+</style>
+
+<script>
+  const dmDate = document.getElementById("dm-date")!;
+  const dmTime = document.getElementById("dm-time")!;
+
+  function update() {
+    const now = new Date();
+    const weekday = now.toLocaleDateString("en-US", { weekday: "short" });
+    const day = now.getDate();
+    const month = now.toLocaleDateString("en-US", { month: "short" });
+    dmDate.textContent = `${weekday} ${day} ${month}`;
+
+    const hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    dmTime.textContent = `${hours}:${minutes}`;
+  }
+
+  update();
+  setInterval(update, 60000);
+
+  const trigger = document.getElementById(
+    "dm-bank-trigger",
+  ) as HTMLButtonElement;
+  const panel = document.getElementById("dm-bank-panel") as HTMLDivElement;
+  const searchInput = document.getElementById(
+    "dm-bank-search",
+  ) as HTMLInputElement;
+  const bankList = document.getElementById("dm-bank-list") as HTMLDivElement;
+  const selectedLogo = document.getElementById(
+    "dm-selected-logo",
+  ) as HTMLSpanElement;
+  const selectedLabel = document.getElementById(
+    "dm-selected-label",
+  ) as HTMLSpanElement;
+
+  function openPanel() {
+    panel.hidden = false;
+    trigger.setAttribute("aria-expanded", "true");
+    const triggerRect = trigger.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - triggerRect.bottom;
+    const panelHeight = 220 + 4; // max-height + gap
+    if (spaceBelow >= panelHeight) {
+      panel.classList.remove("dm-combobox__panel--above");
+      panel.classList.add("dm-combobox__panel--below");
+    } else {
+      panel.classList.remove("dm-combobox__panel--below");
+      panel.classList.add("dm-combobox__panel--above");
+    }
+    searchInput.focus();
+  }
+
+  function closePanel() {
+    panel.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+    searchInput.value = "";
+    bankList
+      .querySelectorAll<HTMLDivElement>(".dm-opt[data-name]")
+      .forEach((o) => (o.hidden = false));
+    bankList.querySelector(".dm-opt--empty")?.remove();
+  }
+
+  trigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (panel.hidden) openPanel();
+    else closePanel();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!panel.hidden && !(e.target as Node).isConnected) return;
+    if (
+      !panel.hidden &&
+      !panel.contains(e.target as Node) &&
+      e.target !== trigger
+    ) {
+      closePanel();
+    }
+  });
+
+  bankList.addEventListener("click", (e) => {
+    const optEl = (e.target as Element).closest<HTMLDivElement>(
+      ".dm-opt[data-name]",
+    );
+    if (!optEl) return;
+    const name = optEl.dataset.name!;
+    const img = optEl.querySelector("img");
+    selectedLabel.textContent = name;
+    selectedLabel.classList.add("dm-combobox__selected-label--chosen");
+    if (img) {
+      selectedLogo.innerHTML = `<img src="${img.src}" alt="${name}" style="width:20px;height:20px;display:block;">`;
+    }
+    closePanel();
+  });
+
+  searchInput.addEventListener("input", () => {
+    const q = searchInput.value.toLowerCase().trim();
+    const opts =
+      bankList.querySelectorAll<HTMLDivElement>(".dm-opt[data-name]");
+    let hasVisible = false;
+    opts.forEach((opt) => {
+      const name = opt.dataset.name!.toLowerCase();
+      const aliases = (opt.dataset.aliases ?? "").toLowerCase();
+      const match = !q || name.includes(q) || aliases.includes(q);
+      opt.hidden = !match;
+      if (match) hasVisible = true;
+    });
+    const existing = bankList.querySelector(".dm-opt--empty");
+    if (!hasVisible && !existing) {
+      const empty = document.createElement("p");
+      empty.className = "dm-opt--empty";
+      empty.textContent = "No banks found";
+      bankList.appendChild(empty);
+    } else if (hasVisible && existing) {
+      existing.remove();
+    }
+  });
+</script>
