@@ -439,7 +439,9 @@ import FloatingFilter from "../components/FloatingFilter.astro";
 
   function activateTab(tabName: string) {
     const isPhone = tabName === "phone";
-    const incoming = isPhone ? viewPhone : viewMonitor;
+    // On mobile the phone view is always shown by CSS; animate it regardless of saved tab
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const incoming = isMobile ? viewPhone : isPhone ? viewPhone : viewMonitor;
 
     // Apply "from" state before CSS makes the element visible — no flash
     gsap.set(incoming, { y: 60, opacity: 0 });
