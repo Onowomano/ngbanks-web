@@ -147,15 +147,20 @@
   type Bank = {
     name: string;
     category: string;
-    logo: string;
+    logos: { circle: string; square: string; [key: string]: string };
     aliases: string[];
   };
   let banks: Bank[] = [];
   let activeCategories: Set<string> | null = null; // null = all
+  let currentStyle = "circle";
 
   const BATCH = 50;
-  const PLACEHOLDER = "/default-bank.svg";
+  const PLACEHOLDER = "/_default/circle.svg";
   let swapEpoch = 0;
+
+  function logoFor(b: Bank): string {
+    return b.logos[currentStyle] ?? b.logos.circle;
+  }
 
   function renderSkeletons(n = 10) {
     list.innerHTML = Array.from(
@@ -169,11 +174,11 @@
     ).join("");
   }
 
-  function row(b: Bank, logoSrc: string, id = "") {
+  function row(b: Bank, id = "") {
     return `
       <div class="bc-row" role="listitem" data-category="${b.category}">
         <div class="bc-logo">
-          <img${id ? ` id="${id}"` : ""} src="${logoSrc}" alt="${b.name}">
+          <img${id ? ` id="${id}"` : ""} src="${logoFor(b)}" alt="${b.name}">
         </div>
         <span class="bc-row__name">${b.name}</span>
       </div>`;
@@ -199,11 +204,24 @@
 
   function renderAll(data: Bank[]) {
     swapEpoch++;
+    const epoch = swapEpoch;
     if (!data.length) {
       list.innerHTML = '<p class="bc-empty">No banks found</p>';
       return;
     }
-    list.innerHTML = data.map((b) => row(b, b.logo)).join("");
+    const placeholder = `/_default/${currentStyle}.svg`;
+    list.innerHTML = data
+      .map(
+        (b, i) => `
+      <div class="bc-row" role="listitem" data-category="${b.category}">
+        <div class="bc-logo">
+          <img id="ra-${i}" src="${placeholder}" alt="${b.name}">
+        </div>
+        <span class="bc-row__name">${b.name}</span>
+      </div>`,
+      )
+      .join("");
+    data.forEach((b, i) => swapLogo(`ra-${i}`, logoFor(b), epoch));
   }
 
   function getFiltered(): Bank[] {
@@ -230,19 +248,29 @@
     const first = banks.slice(0, BATCH);
     const rest = banks.slice(BATCH);
 
-    await Promise.all(first.map((b) => preload(b.logo)));
+    await Promise.all(first.map((b) => preload(logoFor(b))));
 
     swapEpoch++;
     const epoch = swapEpoch;
 
-    list.innerHTML = first.map((b) => row(b, b.logo)).join("");
+    list.innerHTML = first.map((b) => row(b)).join("");
 
     if (rest.length) {
       list.insertAdjacentHTML(
         "beforeend",
-        rest.map((b, i) => row(b, PLACEHOLDER, `bl-${BATCH + i}`)).join(""),
+        rest
+          .map(
+            (b, i) => `
+          <div class="bc-row" role="listitem" data-category="${b.category}">
+            <div class="bc-logo">
+              <img id="bl-${BATCH + i}" src="${PLACEHOLDER}" alt="${b.name}">
+            </div>
+            <span class="bc-row__name">${b.name}</span>
+          </div>`,
+          )
+          .join(""),
       );
-      rest.forEach((b, i) => swapLogo(`bl-${BATCH + i}`, b.logo, epoch));
+      rest.forEach((b, i) => swapLogo(`bl-${BATCH + i}`, logoFor(b), epoch));
     }
   }
 
@@ -257,6 +285,15 @@
     setTimeout(() => renderAll(getFiltered()), 10);
   });
 
+  window.addEventListener("ff:style", (e) => {
+    const { style } = (e as CustomEvent<{ style: string }>).detail;
+    currentStyle = style;
+    list.dataset.style = style;
+    renderSkeletons();
+    setTimeout(() => renderAll(getFiltered()), 10);
+  });
+
+  list.dataset.style = "circle";
   init();
 </script>
 
@@ -466,11 +503,10 @@
     background: #eaeaea;
   }
 
-  /* ── Logo circle ──────────────────────────── */
+  /* ── Logo Container ──────────────────────────── */
   .bc-logo {
     width: 32px;
     height: 32px;
-    border-radius: 9999px;
     flex-shrink: 0;
     overflow: hidden;
   }

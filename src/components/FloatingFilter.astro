@@ -14,7 +14,17 @@ function formatCategory(cat: string): string {
   return cat.replace(/_/g, " ");
 }
 
-const styleOptions = ["circle", "square", "bubble"];
+const logoStyleSet = new Set<string>();
+for (const bank of banksData) {
+  for (const key of Object.keys(bank.logos)) {
+    logoStyleSet.add(key);
+  }
+}
+const styleOptions = [...logoStyleSet].sort((a, b) => {
+  if (a === "circle") return -1;
+  if (b === "circle") return 1;
+  return a.localeCompare(b);
+});
 ---
 
 <div class="ff" id="ff">
@@ -455,4 +465,19 @@ const styleOptions = ["circle", "square", "bubble"];
   }
 
   bankRadios.forEach((r) => r.addEventListener("change", dispatchFilter));
+
+  // Dispatch style filter when a logo-style radio changes
+  const styleRadios = ff.querySelectorAll<HTMLInputElement>(
+    'input[name="logo-style"]',
+  );
+
+  function dispatchStyle() {
+    const selected = ff.querySelector<HTMLInputElement>(
+      'input[name="logo-style"]:checked',
+    );
+    const style = selected?.value ?? "circle";
+    window.dispatchEvent(new CustomEvent("ff:style", { detail: { style } }));
+  }
+
+  styleRadios.forEach((r) => r.addEventListener("change", dispatchStyle));
 </script>

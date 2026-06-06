@@ -1,7 +1,7 @@
 ---
 import banksData from "../data/banks.json";
-type Bank = { name: string; logo: string; aliases: string[]; category: string };
-const banks = banksData as Bank[];
+type Bank = { name: string; logos: { circle: string; square: string }; aliases: string[]; category: string };
+const banks = banksData as unknown as Bank[];
 ---
 
 <div class="dm-outer">
@@ -275,7 +275,7 @@ const banks = banksData as Bank[];
               >
                 <span class="dm-combobox__selected-logo" id="dm-selected-logo">
                   <img
-                    src="/default-bank.svg"
+                    src="/_default/circle.svg"
                     alt="bank-icon"
                     width="28"
                     height="28"
@@ -337,10 +337,12 @@ const banks = banksData as Bank[];
                         data-name={b.name}
                         data-aliases={b.aliases.join(",")}
                         data-category={b.category}
+                        data-circle={b.logos.circle}
+                        data-square={b.logos.square}
                       >
                         <div class="dm-opt__logo">
                           <img
-                            src={b.logo}
+                            src={b.logos.circle}
                             alt={b.name}
                             width="28"
                             height="28"
@@ -1182,6 +1184,33 @@ const banks = banksData as Bank[];
     const skels = showDmSkeletons();
     setTimeout(() => {
       skels.forEach((s) => s.remove());
+      applyDmFilters();
+    }, 10);
+  });
+
+  window.addEventListener("ff:style", (e) => {
+    const { style } = (e as CustomEvent<{ style: string }>).detail;
+    const placeholder = `/_default/${style}.svg`;
+    const skels = showDmSkeletons();
+    setTimeout(() => {
+      skels.forEach((s) => s.remove());
+      const opts =
+        bankList.querySelectorAll<HTMLDivElement>(".dm-opt[data-name]");
+      opts.forEach((opt) => {
+        const logoUrl =
+          (opt.dataset as Record<string, string | undefined>)[style] ??
+          opt.dataset.circle;
+        const img = opt.querySelector("img");
+        if (img && logoUrl) {
+          img.src = placeholder;
+          const loader = new Image();
+          loader.onload = () => {
+            img.src = logoUrl;
+          };
+          loader.src = logoUrl;
+        }
+      });
+      // Un-hide opts that match current search/category state
       applyDmFilters();
     }, 10);
   });
