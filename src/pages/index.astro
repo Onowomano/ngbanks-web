@@ -36,17 +36,16 @@ import FloatingFilter from "../components/FloatingFilter.astro";
             <Logo width={64} height={64} />
           </a>
           <nav class="nav">
-            <a href="/" class="nav__link">Home</a>
-            <a href="https://github.com" class="nav__link">Github</a>
+            <a href="/" class="nav__link nav__home">Home</a>
             <a href="https://figma.com" class="nav__link">Figma</a>
-            <a href="/contribute" class="nav__link">Contribute</a>
+            <a href="https://github.com" class="nav__link">Github</a>
           </nav>
         </div>
 
         <div class="sidebar__bottom">
           <div class="headline-group">
             <h1 class="headline">
-              Open-source<br />repository of 500+<br />Nigerian bank icons
+              Open-source<br />repository of 500+<br />Nigerian bank logos
             </h1>
             <p class="subtext">Free to use under MIT License.</p>
           </div>
@@ -196,6 +195,21 @@ import FloatingFilter from "../components/FloatingFilter.astro";
     --sidebar-pad-x: clamp(20px, 1.94vw, 28px);
     --sidebar-pad-y-top: clamp(20px, 1.94vw, 28px);
     --sidebar-pad-y-bottom: clamp(28px, 2.78vw, 40px);
+
+    font-feature-settings:
+      "ss01" on,
+      "ss02" on,
+      "ss03" on,
+      "ss04" on,
+      "ss05" on,
+      "ss10" on,
+      "ss09" on,
+      "cv01" on,
+      "cv05" on,
+      "cv06" on,
+      "cv08" on,
+      "cv11" on,
+      "cv10" on;
   }
 
   /* ── Reset ──────────────────────────────────── */
@@ -399,6 +413,28 @@ import FloatingFilter from "../components/FloatingFilter.astro";
       height: auto;
       min-height: 100dvh;
     }
+
+    .sidebar__top {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+    }
+
+    .nav__home {
+      display: none;
+    }
+
+    /* .nav {
+      display: none;
+    } */
 
     .sidebar {
       width: 100%;
