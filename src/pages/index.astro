@@ -4,6 +4,7 @@ import FigmaIcon from "../components/icons/FigmaIcon.astro";
 import GithubIcon from "../components/icons/GithubIcon.astro";
 import PhoneMockup from "../components/PhoneMockup.astro";
 import DesktopMockup from "../components/DesktopMockup.astro";
+import FloatingFilter from "../components/FloatingFilter.astro";
 ---
 
 <html lang="en">
@@ -32,7 +33,7 @@ import DesktopMockup from "../components/DesktopMockup.astro";
       <aside class="sidebar">
         <div class="sidebar__top">
           <a href="/" class="logo" aria-label="Home">
-            <Logo width={52} height={55} />
+            <Logo width={64} height={64} />
           </a>
           <nav class="nav">
             <a href="/" class="nav__link">Home</a>
@@ -128,15 +129,24 @@ import DesktopMockup from "../components/DesktopMockup.astro";
         </div>
       </div>
     </main>
+    <FloatingFilter />
   </body>
 </html>
 
 <style is:global>
   /* ── Tab view visibility (CSS-driven, prevents flash) ── */
-  html[data-tab="monitor"] #view-phone   { display: none; }
-  html[data-tab="monitor"] #view-monitor { display: block; }
-  html[data-tab="phone"]   #view-monitor { display: none; }
-  html[data-tab="phone"]   #view-phone   { display: block; }
+  html[data-tab="monitor"] #view-phone {
+    display: none;
+  }
+  html[data-tab="monitor"] #view-monitor {
+    display: block;
+  }
+  html[data-tab="phone"] #view-monitor {
+    display: none;
+  }
+  html[data-tab="phone"] #view-phone {
+    display: block;
+  }
 
   /* Stable width for phone view — breaks the circular sizing dependency
      between #view-phone (shrink-wrapped flex child) and .bc-outer (% width) */
@@ -150,8 +160,14 @@ import DesktopMockup from "../components/DesktopMockup.astro";
     left: 12%;
   }
 
+  /* Start both views invisible so GSAP can animate them in without a flash */
+  #view-phone,
+  #view-monitor {
+    opacity: 0;
+  }
+
   /* ── Tab button active state (CSS-driven, prevents flash) ── */
-  html[data-tab="phone"]   .tab-item[data-tab="phone"],
+  html[data-tab="phone"] .tab-item[data-tab="phone"],
   html[data-tab="monitor"] .tab-item[data-tab="monitor"] {
     background: #ffffff;
     border-color: #eef7fd;
@@ -277,6 +293,7 @@ import DesktopMockup from "../components/DesktopMockup.astro";
   .logo {
     display: inline-flex;
     text-decoration: none;
+    margin-left: -10px;
   }
 
   /* ── Nav ────────────────────────────────────── */
@@ -414,20 +431,35 @@ import DesktopMockup from "../components/DesktopMockup.astro";
 </style>
 
 <script>
+  import gsap from "gsap";
+
   const tabs = document.querySelectorAll<HTMLButtonElement>(".tab-item");
   const viewPhone = document.getElementById("view-phone")!;
   const viewMonitor = document.getElementById("view-monitor")!;
 
   function activateTab(tabName: string) {
+    const isPhone = tabName === "phone";
+    const incoming = isPhone ? viewPhone : viewMonitor;
+
+    // Apply "from" state before CSS makes the element visible — no flash
+    gsap.set(incoming, { y: 60, opacity: 0 });
+
     document.documentElement.setAttribute("data-tab", tabName);
     tabs.forEach((t) => {
       const active = t.dataset.tab === tabName;
       t.classList.toggle("tab-item--active", active);
       t.setAttribute("aria-selected", String(active));
     });
-    const isPhone = tabName === "phone";
     viewPhone.hidden = !isPhone;
     viewMonitor.hidden = isPhone;
+
+    gsap.to(incoming, {
+      y: 0,
+      opacity: 1,
+      duration: 0.5,
+      ease: "power3.out",
+      overwrite: true,
+    });
   }
 
   const saved = localStorage.getItem("active-tab") ?? "phone";

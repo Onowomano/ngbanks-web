@@ -1,6 +1,6 @@
 ---
 import banksData from "../data/banks.json";
-type Bank = { name: string; logo: string; aliases: string[] };
+type Bank = { name: string; logo: string; aliases: string[]; category: string };
 const banks = banksData as Bank[];
 ---
 
@@ -258,9 +258,7 @@ const banks = banksData as Bank[];
 
         <div class="dm-send-header">
           <span class="dm-send-header__title">Send money</span>
-          <span class="dm-send-header__subtitle"
-            >Send money to your friends and family</span
-          >
+          <span class="dm-send-header__subtitle">11 Free Transfers Left</span>
         </div>
 
         <!-- Select -->
@@ -274,10 +272,17 @@ const banks = banksData as Bank[];
               aria-haspopup="listbox"
               aria-expanded="false"
             >
-              <span class="dm-combobox__selected-logo" id="dm-selected-logo"
-              ></span>
+              <span class="dm-combobox__selected-logo" id="dm-selected-logo">
+                <img
+                  src="/default-bank.svg"
+                  alt="bank-icon"
+                  width="28"
+                  height="28"
+                  loading="lazy"
+                /></span
+              >
               <span class="dm-combobox__selected-label" id="dm-selected-label"
-                >Select bank</span
+                >Choose bank</span
               >
               <svg
                 class="dm-combobox__chevron"
@@ -330,13 +335,14 @@ const banks = banksData as Bank[];
                       role="option"
                       data-name={b.name}
                       data-aliases={b.aliases.join(",")}
+                      data-category={b.category}
                     >
                       <div class="dm-opt__logo">
                         <img
                           src={b.logo}
                           alt={b.name}
-                          width="32"
-                          height="32"
+                          width="28"
+                          height="28"
                           loading="lazy"
                         />
                       </div>
@@ -501,9 +507,10 @@ const banks = banksData as Bank[];
   .dm-plus-box {
     display: flex;
     flex-direction: row;
+    height: 44px;
     align-items: center;
     padding: 12px;
-    margin: 2px 0;
+    margin-top: 9px;
   }
 
   .dm-tab-plus {
@@ -554,7 +561,7 @@ const banks = banksData as Bank[];
   }
 
   .dm-navbtn--dim {
-    opacity: 0.2;
+    opacity: 0.8;
     cursor: default;
   }
 
@@ -646,7 +653,7 @@ const banks = banksData as Bank[];
 
   .dm-send-header__subtitle {
     font-weight: 400;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 20px;
     letter-spacing: -0.02em;
     color: #6b7280;
@@ -748,11 +755,33 @@ const banks = banksData as Bank[];
   }
 
   /* ── Shared skeleton ──────────────────────── */
+  @keyframes dm-shimmer {
+    from {
+      background-position: -200% 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
+  }
+
   .dm-skel {
-    height: 12px;
-    border-radius: 6px;
-    background: #f0f0f0;
     display: block;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: dm-shimmer 1.4s ease-in-out infinite;
+    border-radius: 6px;
+  }
+
+  .dm-skel--circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+  }
+
+  .dm-skel--name {
+    flex: 1;
+    height: 12px;
+    max-width: 60%;
   }
 
   /* ── Bank combobox ────────────────────────── */
@@ -865,11 +894,11 @@ const banks = banksData as Bank[];
 
   .dm-combobox__search-input {
     width: 100%;
-    height: 30px;
-    border: 1.5px solid #eaeaea;
-    border-radius: 4px;
-    padding: 0 8px 0 28px;
-    font-size: 12px;
+    height: 40px;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    padding: 12px 12px 12px 30px;
+    font-size: 14px;
     font-family: inherit;
     color: #030712;
     letter-spacing: -0.02em;
@@ -904,10 +933,14 @@ const banks = banksData as Bank[];
     flex-direction: row;
     align-items: center;
     gap: 8px;
-    padding: 6px 10px;
+    padding: 8px 10px;
     cursor: pointer;
     border-bottom: 1px solid #f5f5f5;
     flex-shrink: 0;
+  }
+
+  .dm-opt[hidden] {
+    display: none;
   }
 
   .dm-opt:last-child {
@@ -919,14 +952,10 @@ const banks = banksData as Bank[];
   }
 
   .dm-opt__logo {
-    width: 32px;
-    height: 32px;
     flex-shrink: 0;
   }
 
   .dm-opt__logo img {
-    width: 32px;
-    height: 32px;
     display: block;
   }
 
@@ -964,7 +993,24 @@ const banks = banksData as Bank[];
   }
 
   update();
-  setInterval(update, 60000);
+  // Start periodic updates and pause when the page is hidden to save CPU
+  let dmInterval: ReturnType<typeof setInterval> | null = setInterval(
+    update,
+    60000,
+  );
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      if (dmInterval !== null) {
+        clearInterval(dmInterval);
+        dmInterval = null;
+      }
+    } else {
+      // Immediately update when becoming visible and restart the interval
+      update();
+      if (dmInterval === null) dmInterval = setInterval(update, 60000);
+    }
+  });
 
   const trigger = document.getElementById(
     "dm-bank-trigger",
@@ -1001,27 +1047,13 @@ const banks = banksData as Bank[];
     panel.hidden = true;
     trigger.setAttribute("aria-expanded", "false");
     searchInput.value = "";
-    bankList
-      .querySelectorAll<HTMLDivElement>(".dm-opt[data-name]")
-      .forEach((o) => (o.hidden = false));
-    bankList.querySelector(".dm-opt--empty")?.remove();
+    applyDmFilters();
   }
 
   trigger.addEventListener("click", (e) => {
     e.stopPropagation();
     if (panel.hidden) openPanel();
     else closePanel();
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!panel.hidden && !(e.target as Node).isConnected) return;
-    if (
-      !panel.hidden &&
-      !panel.contains(e.target as Node) &&
-      e.target !== trigger
-    ) {
-      closePanel();
-    }
   });
 
   bankList.addEventListener("click", (e) => {
@@ -1039,7 +1071,9 @@ const banks = banksData as Bank[];
     closePanel();
   });
 
-  searchInput.addEventListener("input", () => {
+  let dmActiveCategories: Set<string> | null = null;
+
+  function applyDmFilters() {
     const q = searchInput.value.toLowerCase().trim();
     const opts =
       bankList.querySelectorAll<HTMLDivElement>(".dm-opt[data-name]");
@@ -1047,9 +1081,12 @@ const banks = banksData as Bank[];
     opts.forEach((opt) => {
       const name = opt.dataset.name!.toLowerCase();
       const aliases = (opt.dataset.aliases ?? "").toLowerCase();
-      const match = !q || name.includes(q) || aliases.includes(q);
-      opt.hidden = !match;
-      if (match) hasVisible = true;
+      const cat = opt.dataset.category ?? "";
+      const matchSearch = !q || name.includes(q) || aliases.includes(q);
+      const matchCat =
+        dmActiveCategories === null || dmActiveCategories.has(cat);
+      opt.hidden = !(matchSearch && matchCat);
+      if (!opt.hidden) hasVisible = true;
     });
     const existing = bankList.querySelector(".dm-opt--empty");
     if (!hasVisible && !existing) {
@@ -1060,5 +1097,35 @@ const banks = banksData as Bank[];
     } else if (hasVisible && existing) {
       existing.remove();
     }
+  }
+
+  searchInput.addEventListener("input", applyDmFilters);
+
+  function showDmSkeletons(): HTMLElement[] {
+    bankList
+      .querySelectorAll<HTMLElement>(".dm-opt[data-name]")
+      .forEach((el) => {
+        el.hidden = true;
+      });
+    bankList.querySelector(".dm-opt--empty")?.remove();
+    const skels = Array.from({ length: 6 }, () => {
+      const row = document.createElement("div");
+      row.className = "dm-opt";
+      row.style.pointerEvents = "none";
+      row.innerHTML = `<div class="dm-opt__logo"><span class="dm-skel dm-skel--circle"></span></div><span class="dm-skel dm-skel--name"></span>`;
+      bankList.appendChild(row);
+      return row;
+    });
+    return skels;
+  }
+
+  window.addEventListener("ff:filter", (e) => {
+    const { category } = (e as CustomEvent<{ category: string }>).detail;
+    dmActiveCategories = category === "all" ? null : new Set([category]);
+    const skels = showDmSkeletons();
+    setTimeout(() => {
+      skels.forEach((s) => s.remove());
+      applyDmFilters();
+    }, 10);
   });
 </script>
