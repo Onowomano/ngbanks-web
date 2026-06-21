@@ -1,7 +1,4 @@
 ---
-import banksData from "../data/banks.json";
-type Bank = { name: string; logos: { circle: string; square: string }; aliases: string[]; category: string };
-const banks = banksData as unknown as Bank[];
 ---
 
 <div class="dm-outer">
@@ -329,30 +326,6 @@ const banks = banksData as unknown as Bank[];
                   />
                 </div>
                 <div class="dm-combobox__list" id="dm-bank-list" role="listbox">
-                  {
-                    banks.map((b) => (
-                      <div
-                        class="dm-opt"
-                        role="option"
-                        data-name={b.name}
-                        data-aliases={b.aliases.join(",")}
-                        data-category={b.category}
-                        data-circle={b.logos.circle}
-                        data-square={b.logos.square}
-                      >
-                        <div class="dm-opt__logo">
-                          <img
-                            src={b.logos.circle}
-                            alt={b.name}
-                            width="28"
-                            height="28"
-                            loading="lazy"
-                          />
-                        </div>
-                        <span class="dm-opt__name">{b.name}</span>
-                      </div>
-                    ))
-                  }
                 </div>
               </div>
             </div>
@@ -382,7 +355,7 @@ const banks = banksData as unknown as Bank[];
   </div>
 </div>
 
-<style>
+<style is:global>
   /* ── Outer wrapper ────────────────────────── */
   .dm-outer {
     width: 1628px;
@@ -1085,6 +1058,36 @@ const banks = banksData as unknown as Bank[];
   const selectedLabel = document.getElementById(
     "dm-selected-label",
   ) as HTMLSpanElement;
+
+  type Bank = { name: string; logos: Record<string, string>; aliases: string[]; category: string };
+
+  function renderBanks(banks: Bank[]) {
+    bankList.innerHTML = "";
+    for (const b of banks) {
+      const el = document.createElement("div");
+      el.className = "dm-opt";
+      el.setAttribute("role", "option");
+      el.dataset.name = b.name;
+      el.dataset.aliases = b.aliases.join(",");
+      el.dataset.category = b.category;
+      el.dataset.circle = b.logos.circle ?? "";
+      el.dataset.square = b.logos.square ?? "";
+      el.innerHTML = `<div class="dm-opt__logo"><img src="${b.logos.circle ?? ""}" alt="${b.name}" width="28" height="28" loading="lazy"/></div><span class="dm-opt__name">${b.name}</span>`;
+      bankList.appendChild(el);
+    }
+  }
+
+  const skels = showDmSkeletons();
+  fetch("/api/banks.json")
+    .then((r) => r.json())
+    .then((banks: Bank[]) => {
+      skels.forEach((s) => s.remove());
+      renderBanks(banks);
+      window.dispatchEvent(new CustomEvent("dm:banks-loaded", { detail: { banks } }));
+    })
+    .catch(() => {
+      skels.forEach((s) => s.remove());
+    });
 
   function openPanel() {
     panel.hidden = false;

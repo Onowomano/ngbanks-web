@@ -1,30 +1,4 @@
 ---
-import banksData from "../data/banks.json";
-
-const categoryMap = new Map<string, number>();
-for (const bank of banksData) {
-  const cat = bank.category as string;
-  categoryMap.set(cat, (categoryMap.get(cat) ?? 0) + 1);
-}
-const categories = [...categoryMap.entries()].sort((a, b) =>
-  a[0].localeCompare(b[0]),
-);
-
-function formatCategory(cat: string): string {
-  return cat.replace(/_/g, " ");
-}
-
-const logoStyleSet = new Set<string>();
-for (const bank of banksData) {
-  for (const key of Object.keys(bank.logos)) {
-    logoStyleSet.add(key);
-  }
-}
-const styleOptions = [...logoStyleSet].sort((a, b) => {
-  if (a === "circle") return -1;
-  if (b === "circle") return 1;
-  return a.localeCompare(b);
-});
 ---
 
 <div class="ff" id="ff">
@@ -32,30 +6,12 @@ const styleOptions = [...logoStyleSet].sort((a, b) => {
   <div class="ff__body" id="ff-body">
     <div class="ff__section">
       <span class="ff__section-label">style</span>
-      <div class="ff__rows">
-        {
-          styleOptions.map((opt, i) => (
-            <label class="ff__row">
-              <span class="ff__ctrl-wrap">
-                <input
-                  type="radio"
-                  class="ff__radio"
-                  name="logo-style"
-                  value={opt}
-                  checked={i === 0}
-                />
-                <span class="ff__radio-disc" aria-hidden="true" />
-              </span>
-              <span class="ff__row-label">{opt}</span>
-            </label>
-          ))
-        }
-      </div>
+      <div class="ff__rows" id="ff-style-rows"></div>
     </div>
 
     <div class="ff__section">
       <span class="ff__section-label">banks</span>
-      <div class="ff__rows">
+      <div class="ff__rows" id="ff-bank-rows">
         <label class="ff__row">
           <span class="ff__ctrl-wrap">
             <input
@@ -69,24 +25,6 @@ const styleOptions = [...logoStyleSet].sort((a, b) => {
           </span>
           <span class="ff__row-label">all</span>
         </label>
-        {
-          categories.map(([cat, count]) => (
-            <label class="ff__row">
-              <span class="ff__ctrl-wrap">
-                <input
-                  type="radio"
-                  class="ff__radio ff__bank-radio"
-                  name="bank-category"
-                  value={cat}
-                />
-                <span class="ff__radio-disc" aria-hidden="true" />
-              </span>
-              <span class="ff__row-label">
-                {formatCategory(cat)} ({count})
-              </span>
-            </label>
-          ))
-        }
       </div>
     </div>
   </div>
@@ -134,7 +72,7 @@ const styleOptions = [...logoStyleSet].sort((a, b) => {
   </button>
 </div>
 
-<style>
+<style is:global>
   @media (max-width: 1023px) {
     .ff {
       display: none;
@@ -450,34 +388,71 @@ const styleOptions = [...logoStyleSet].sort((a, b) => {
     if (isOpen && !ff.contains(e.target as Node)) closeFilter();
   });
 
-  // Dispatch category filter when a bank radio changes
-  const bankRadios = ff.querySelectorAll<HTMLInputElement>(".ff__bank-radio");
+  const styleRowsEl = document.getElementById("ff-style-rows") as HTMLDivElement;
+  const bankRowsEl = document.getElementById("ff-bank-rows") as HTMLDivElement;
 
   function dispatchFilter() {
-    const selected = ff.querySelector<HTMLInputElement>(
-      ".ff__bank-radio:checked",
-    );
+    const selected = ff.querySelector<HTMLInputElement>(".ff__bank-radio:checked");
     const category = selected?.value ?? "all";
     filterTxt.textContent = category === "all" ? "Filter" : "Filter (1)";
-    window.dispatchEvent(
-      new CustomEvent("ff:filter", { detail: { category } }),
-    );
+    window.dispatchEvent(new CustomEvent("ff:filter", { detail: { category } }));
   }
 
-  bankRadios.forEach((r) => r.addEventListener("change", dispatchFilter));
-
-  // Dispatch style filter when a logo-style radio changes
-  const styleRadios = ff.querySelectorAll<HTMLInputElement>(
-    'input[name="logo-style"]',
-  );
-
   function dispatchStyle() {
-    const selected = ff.querySelector<HTMLInputElement>(
-      'input[name="logo-style"]:checked',
-    );
+    const selected = ff.querySelector<HTMLInputElement>('input[name="logo-style"]:checked');
     const style = selected?.value ?? "circle";
     window.dispatchEvent(new CustomEvent("ff:style", { detail: { style } }));
   }
 
-  styleRadios.forEach((r) => r.addEventListener("change", dispatchStyle));
+  function makeRadioLabel(name: string, value: string, label: string, checked: boolean, extraClass = ""): HTMLLabelElement {
+    const el = document.createElement("label");
+    el.className = "ff__row";
+    el.innerHTML = `<span class="ff__ctrl-wrap"><input type="radio" class="ff__radio${extraClass ? " " + extraClass : ""}" name="${name}" value="${value}"${checked ? " checked" : ""}><span class="ff__radio-disc" aria-hidden="true"></span></span><span class="ff__row-label">${label}</span>`;
+    return el;
+  }
+
+  type Bank = { logos: Record<string, string>; category: string };
+
+  function populateFilters(banks: Bank[]) {
+    const logoStyleSet = new Set<string>();
+    const categoryMap = new Map<string, number>();
+    for (const b of banks) {
+      for (const key of Object.keys(b.logos)) logoStyleSet.add(key);
+      const cat = b.category;
+      categoryMap.set(cat, (categoryMap.get(cat) ?? 0) + 1);
+    }
+    const styleOptions = [...logoStyleSet].sort((a, b) => {
+      if (a === "circle") return -1;
+      if (b === "circle") return 1;
+      return a.localeCompare(b);
+    });
+    const categories = [...categoryMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+
+    styleRowsEl.innerHTML = "";
+    styleOptions.forEach((opt, i) => {
+      const lbl = makeRadioLabel("logo-style", opt, opt, i === 0);
+      lbl.querySelector("input")!.addEventListener("change", dispatchStyle);
+      styleRowsEl.appendChild(lbl);
+    });
+
+    const existingAll = bankRowsEl.querySelector<HTMLInputElement>(".ff__bank-radio[value='all']");
+    existingAll?.closest("label")?.querySelector("input")?.addEventListener("change", dispatchFilter);
+
+    for (const [cat, count] of categories) {
+      const label = cat.replace(/_/g, " ") + ` (${count})`;
+      const lbl = makeRadioLabel("bank-category", cat, label, false, "ff__bank-radio");
+      lbl.querySelector("input")!.addEventListener("change", dispatchFilter);
+      bankRowsEl.appendChild(lbl);
+    }
+
+    if (styleOptions.length > 0) dispatchStyle();
+  }
+
+  window.addEventListener("dm:banks-loaded", (e) => {
+    const { banks } = (e as CustomEvent<{ banks: Bank[] }>).detail;
+    populateFilters(banks);
+  });
+
+  // Also wire up the static "all" radio immediately
+  bankRowsEl.querySelector<HTMLInputElement>(".ff__bank-radio")?.addEventListener("change", dispatchFilter);
 </script>

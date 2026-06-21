@@ -1,7 +1,11 @@
 import type { APIRoute } from 'astro';
-import banks from '../../data/banks.json';
 
-export const GET: APIRoute = () =>
-  new Response(JSON.stringify(banks), {
+const CDN_URL = 'https://cdn.jsdelivr.net/gh/Nigerian-Bank-Logos/ng-bank-logos@main/dist/banks_NGN.json';
+
+export const GET: APIRoute = async () => {
+  const upstream = await fetch(CDN_URL);
+  const data = await upstream.json();
+  return new Response(JSON.stringify(data), {
     headers: { 'Content-Type': 'application/json' },
   });
+};
