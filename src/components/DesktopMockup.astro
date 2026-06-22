@@ -991,6 +991,10 @@
     display: block;
   }
 
+  [data-style="square"] .dm-opt__logo img {
+    border-radius: 4px;
+  }
+
   .dm-opt__name {
     font-size: 14px;
     color: #030712;
@@ -1009,6 +1013,8 @@
 </style>
 
 <script>
+  import { BANKS_CDN_URL } from '../lib/constants';
+
   const dmDate = document.getElementById("dm-date")!;
   const dmTime = document.getElementById("dm-time")!;
 
@@ -1078,7 +1084,7 @@
   }
 
   const skels = showDmSkeletons();
-  fetch("/api/banks.json")
+  fetch(BANKS_CDN_URL)
     .then((r) => r.json())
     .then((banks: Bank[]) => {
       skels.forEach((s) => s.remove());
@@ -1193,6 +1199,7 @@
 
   window.addEventListener("ff:style", (e) => {
     const { style } = (e as CustomEvent<{ style: string }>).detail;
+    bankList.dataset.style = style;
     const placeholder = `/_default/${style}.svg`;
     const skels = showDmSkeletons();
     setTimeout(() => {

@@ -127,6 +127,8 @@
 </div>
 
 <script>
+  import { BANKS_CDN_URL } from '../lib/constants';
+
   const list = document.getElementById("bc-list")!;
   const input = document.getElementById("bc-search") as HTMLInputElement;
   const statusTime = document.querySelector(".bc-status__time");
@@ -242,7 +244,7 @@
 
   async function init() {
     renderSkeletons();
-    const res = await fetch("/api/banks.json");
+    const res = await fetch(BANKS_CDN_URL);
     banks = await res.json();
 
     const first = banks.slice(0, BATCH);
@@ -516,6 +518,10 @@
     height: 100%;
     object-fit: contain;
     display: block;
+  }
+
+  [data-style="square"] .bc-logo img {
+    border-radius: 4px;
   }
 
   /* ── Row name ─────────────────────────────── */
