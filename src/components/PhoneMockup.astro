@@ -149,7 +149,7 @@
   type Bank = {
     name: string;
     category: string;
-    logos: { circle: string; square: string; [key: string]: string };
+    logos: { png: string; [key: string]: string };
     aliases: string[];
   };
   let banks: Bank[] = [];
@@ -161,7 +161,7 @@
   let swapEpoch = 0;
 
   function logoFor(b: Bank): string {
-    return b.logos[currentStyle] ?? b.logos.circle;
+    return b.logos.png;
   }
 
   function renderSkeletons(n = 10) {
@@ -518,6 +518,12 @@
     height: 100%;
     object-fit: contain;
     display: block;
+    border: 1px solid #eaeaea;
+    box-sizing: border-box;
+  }
+
+  [data-style="circle"] .bc-logo img {
+    border-radius: 50%;
   }
 
   [data-style="square"] .bc-logo img {

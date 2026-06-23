@@ -1,7 +1,7 @@
 ---
 ---
 
-<div class="dm-outer">
+<div class="dm-outer" data-style="circle">
   <div class="dm-frame">
     <!-- ── System bar ─────────────────────────── -->
     <div class="dm-statusbar">
@@ -856,6 +856,8 @@
     width: 20px;
     height: 20px;
     display: block;
+    border: 1px solid #eaeaea;
+    box-sizing: border-box;
   }
 
   .dm-combobox__selected-label {
@@ -989,9 +991,17 @@
 
   .dm-opt__logo img {
     display: block;
+    border: 1px solid #eaeaea;
+    box-sizing: border-box;
   }
 
-  [data-style="square"] .dm-opt__logo img {
+  [data-style="circle"] .dm-opt__logo img,
+  [data-style="circle"] .dm-combobox__selected-logo img {
+    border-radius: 50%;
+  }
+
+  [data-style="square"] .dm-opt__logo img,
+  [data-style="square"] .dm-combobox__selected-logo img {
     border-radius: 4px;
   }
 
@@ -1076,9 +1086,9 @@
       el.dataset.name = b.name;
       el.dataset.aliases = b.aliases.join(",");
       el.dataset.category = b.category;
-      el.dataset.circle = b.logos.circle ?? "";
-      el.dataset.square = b.logos.square ?? "";
-      el.innerHTML = `<div class="dm-opt__logo"><img src="${b.logos.circle ?? ""}" alt="${b.name}" width="28" height="28" loading="lazy"/></div><span class="dm-opt__name">${b.name}</span>`;
+      el.dataset.circle = b.logos.png ?? "";
+      el.dataset.square = b.logos.png ?? "";
+      el.innerHTML = `<div class="dm-opt__logo"><img src="${b.logos.png ?? ""}" alt="${b.name}" width="28" height="28" loading="lazy"/></div><span class="dm-opt__name">${b.name}</span>`;
       bankList.appendChild(el);
     }
   }
@@ -1200,6 +1210,8 @@
   window.addEventListener("ff:style", (e) => {
     const { style } = (e as CustomEvent<{ style: string }>).detail;
     bankList.dataset.style = style;
+    const dmOuter = document.querySelector<HTMLDivElement>(".dm-outer");
+    if (dmOuter) dmOuter.dataset.style = style;
     const placeholder = `/_default/${style}.svg`;
     const skels = showDmSkeletons();
     setTimeout(() => {
