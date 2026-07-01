@@ -245,7 +245,7 @@
   async function init() {
     renderSkeletons();
     const res = await fetch(BANKS_CDN_URL);
-    banks = await res.json();
+    banks = (await res.json()).banks;
 
     const first = banks.slice(0, BATCH);
     const rest = banks.slice(BATCH);
