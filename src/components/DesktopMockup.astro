@@ -1108,7 +1108,7 @@
   const skels = showDmSkeletons();
   fetch(BANKS_CDN_URL)
     .then((r) => r.json())
-    .then((banks: Bank[]) => {
+    .then(({ banks }: { banks: Bank[] }) => {
       skels.forEach((s) => s.remove());
       renderBanks(banks);
       window.dispatchEvent(
