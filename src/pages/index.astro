@@ -73,6 +73,8 @@ import Analytics from "@vercel/analytics/astro";
               class="nav__link"
               target="_blank"
               rel="noopener noreferrer"
+              data-umami-event="Figma Plugin Nav Clicked"
+              data-track="nav-figma-plugin"
             >
               Figma plugin
             </a>
@@ -80,7 +82,9 @@ import Analytics from "@vercel/analytics/astro";
               href="https://github.com/Nigerian-Bank-Logos/ng-bank-logos"
               class="nav__link"
               target="_blank"
-              rel="noopener noreferrer">Github</a
+              rel="noopener noreferrer"
+              data-umami-event="GitHub Nav Clicked"
+              data-track="nav-github">Github</a
             >
           </nav>
         </div>
@@ -98,6 +102,8 @@ import Analytics from "@vercel/analytics/astro";
               class="btn"
               target="_blank"
               rel="noopener noreferrer"
+              data-umami-event="Figma Button Clicked"
+              data-track="figma"
             >
               <FigmaIcon />
               <span>Figma</span>
@@ -107,6 +113,8 @@ import Analytics from "@vercel/analytics/astro";
               class="btn"
               target="_blank"
               rel="noopener noreferrer"
+              data-umami-event="GitHub Button Clicked"
+              data-track="github"
             >
               <GithubIcon />
               <span>Github</span>
@@ -184,6 +192,24 @@ import Analytics from "@vercel/analytics/astro";
     <FloatingFilter />
   </body>
 </html>
+
+<script>
+  import { track } from "@vercel/analytics";
+
+  const labels: Record<string, string> = {
+    "figma": "Figma Button Clicked",
+    "github": "GitHub Button Clicked",
+    "nav-figma-plugin": "Figma Plugin Nav Clicked",
+    "nav-github": "GitHub Nav Clicked",
+  };
+
+  document.querySelectorAll<HTMLElement>("[data-track]").forEach((el) => {
+    el.addEventListener("click", () => {
+      const label = labels[el.dataset.track!];
+      if (label) track(label);
+    });
+  });
+</script>
 
 <style is:global>
   /* ── Tab view visibility (CSS-driven, prevents flash) ── */
