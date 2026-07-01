@@ -5,6 +5,7 @@ import GithubIcon from "../components/icons/GithubIcon.astro";
 import PhoneMockup from "../components/PhoneMockup.astro";
 import DesktopMockup from "../components/DesktopMockup.astro";
 import FloatingFilter from "../components/FloatingFilter.astro";
+import Analytics from "@vercel/analytics/astro";
 ---
 
 <html lang="en">
@@ -52,6 +53,11 @@ import FloatingFilter from "../components/FloatingFilter.astro";
         if (_t) document.documentElement.setAttribute("data-tab", _t);
       } catch (e) {}
     </script>
+    <script
+      defer
+      src="https://cloud.umami.is/script.js"
+      data-website-id="d8261c27-3be9-4bc4-a38b-dea4d49dccd0"></script>
+    <Analytics />
   </head>
   <body>
     <main class="hero">
