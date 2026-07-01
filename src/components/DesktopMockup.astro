@@ -857,8 +857,11 @@
     width: 20px;
     height: 20px;
     display: block;
-    border: 1px solid #eaeaea;
     box-sizing: border-box;
+  }
+
+  .dm-combobox__selected-logo--chosen img {
+    border: 1px solid #eaeaea;
   }
 
   .dm-combobox__selected-label {
@@ -1152,6 +1155,7 @@
     selectedLabel.textContent = name;
     selectedLabel.classList.add("dm-combobox__selected-label--chosen");
     if (img) {
+      selectedLogo.classList.add("dm-combobox__selected-logo--chosen");
       selectedLogo.innerHTML = `<img src="${img.src}" alt="${name}" style="width:20px;height:20px;display:block;">`;
     }
     closePanel();
